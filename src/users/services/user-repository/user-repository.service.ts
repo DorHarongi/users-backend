@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Document, InsertOneResult } from 'mongodb';
+import { Document, InsertOneResult, ModifyResult } from 'mongodb';
 import { UpdateUserInput } from '../../../users/dto/input/update-user.input';
 import { UserDTO } from '../../dto/user.dto';
 import { DbAccessorService } from '../../../database/services/db-accessor.service';
@@ -36,15 +36,14 @@ export class UserRepositoryService {
     
     async updateUser(updateUserData: UpdateUserInput)
     {
-        const result: Document = await this.dbAccessorService.getCollection(COLLECTION_NAME).findOneAndUpdate(
+        const updatedUser: User = (await this.dbAccessorService.getCollection(COLLECTION_NAME).findOneAndUpdate(
             { name: updateUserData.name },
             { $set: updateUserData },
             { returnDocument: 'after' }
-        );
-        const users: UserDTO[] = result.value.map((user)=>{
-            return new UserDTO(user.name, user.email, user.address, user.accessLevel, user.homeLocation);
-        })
-       return users;
+        )).value as User;
+
+        return new UserDTO(updatedUser.name, updatedUser.email, updatedUser.address,
+            updatedUser.accessLevel, updatedUser.homeLocation);
     }
 
 }
