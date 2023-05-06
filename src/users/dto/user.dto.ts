@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from "@nestjs/graphql";
-import { AccessLevel } from "../../models/accessLevel.enum";
+import { AccessLevel } from "../models/accessLevel.enum";
 import { LocationDTO } from "./location.dto";
 
 registerEnumType(AccessLevel, {
@@ -24,4 +24,13 @@ export class UserDTO {
 
   @Field(() => LocationDTO)
   homeLocation: LocationDTO;
+
+  constructor(name: string, email: string, address: string, accessLevel: AccessLevel, homeLocation: LocationDTO)
+  {
+    this.name = name;
+    this.email = email;
+    this.address = address;
+    this.accessLevel = accessLevel;
+    this.homeLocation = homeLocation;
+  }
 }

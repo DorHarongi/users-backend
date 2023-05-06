@@ -1,7 +1,7 @@
 import { Field, InputType, registerEnumType } from "@nestjs/graphql";
 import { IsNotEmpty } from "class-validator"
 import { AccessLevel } from "../../../users/models/accessLevel.enum";
-import { LocationDTO } from "../entities/location.dto";
+import { LocationDTO } from "../location.dto";
 
 registerEnumType(AccessLevel, {
     name: 'AccessLevel',
